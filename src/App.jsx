@@ -53,6 +53,7 @@ export default class App extends React.Component {
 
   render() {
     const { users } = this.state;
+    console.log(users);
     return (
       <div>
         <div ref={this.myRef}> </div>
