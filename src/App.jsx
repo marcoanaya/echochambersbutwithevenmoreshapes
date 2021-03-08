@@ -57,7 +57,7 @@ export default class App extends React.Component {
       <div>
         <div ref={this.myRef}> </div>
         <ul className="users">
-          {users.map((user) => (
+          {users && users.map((user) => (
             <li className="user">
               <p>
                 <strong>Name:</strong>
