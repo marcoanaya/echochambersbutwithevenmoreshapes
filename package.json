@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start": "yarn run build && (cd api && yarn && yarn start)",
+    "start:dev": "set NODE_ENV=development&&yarn run build && (cd api && yarn && yarn start)",
     "start-client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

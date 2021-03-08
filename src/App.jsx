@@ -2,6 +2,7 @@ import React from 'react';
 import p5 from 'p5';
 import axios from 'axios';
 import Graph from './scripts/graph';
+import { config } from './scripts/config';
 import './index.css';
 
 // const toStr = (key) => String.fromCharCode((key >= 96 && key <= 105) ? key - 48 : key);
@@ -20,7 +21,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.myRef.current); // eslint-disable-line
-    axios.get('/users.json').then((response) => {
+    axios.get(`${config.SERVER_URI}/users.json`).then((response) => {
       this.setState({ users: response.data });
     });
 
