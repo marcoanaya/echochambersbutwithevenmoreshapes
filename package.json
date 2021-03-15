@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-syntax-class-properties": "^7.12.13",
+    "@firebase/app": "^0.6.15",
+    "@firebase/auth": "^0.16.4",
+    "@firebase/database": "^0.9.5",
+    "@react-firebase/auth": "^0.2.10",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -19,9 +23,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "yarn run build && (cd api && yarn && yarn start)",
-    "start:dev": "set NODE_ENV=development&&yarn run build && (cd api && yarn && yarn start)",
-    "start-client": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -45,6 +47,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.8"
+    "@babel/eslint-parser": "^7.13.8",
+    "babel-eslint": "^10.1.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "parcel-bundler": "^1.12.4"
   }
 }

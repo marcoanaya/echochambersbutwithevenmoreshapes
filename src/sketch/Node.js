@@ -6,7 +6,7 @@ import {
  * Represents each individual shape
  */
 export default class Node {
-  constructor(i, w, h, g) {
+  constructor(i, w, h, g, user = false) {
     this.name = i;
     this.graph = g;
     // polarity coefficient
@@ -16,16 +16,18 @@ export default class Node {
     // random attributes for more visual aesthetics
     // todo: make shapes more interesting
     this.r = Math.random();
-    this.pos = createVector(...[w / 3, h / 2.1].map((x) => P.random(-x, x)));
+    this.pos = createVector(...[w / 3, h / 2.1].map((x) => random(-x, x)));
 
-    this.sides = random([3, 4, 6, 24]);
+    this.sides = user ? user.sides : random([3, 4, 6, 24]);
     this.radii = [25, 15].map((x) => randWithin(x, x / 3));
 
     // initializes 'signal' (circle that comes out of shape)
     this.signalSize = 0;
+    this.user = user;
   }
 
-  /* graphic representation of shape and its 'signal' */
+  /* graphic representation of shape and its 'signal'
+   */
   draw(p) {
     p.push();
     p.translate(this.pos);
@@ -36,7 +38,8 @@ export default class Node {
 
   drawSelf(p) {
     p.push();
-    p.fill(...clr(this.c));
+    if (this.user) p.fill(this.user.c);
+    else p.fill(...clr(this.c));
     p.noStroke();
 
     p.rotateX((this.r * p.frameCount) / 10);
@@ -47,8 +50,13 @@ export default class Node {
 
   drawSignal(p) {
     p.push();
-    p.fill(...clr(this.c));
-    p.stroke(...clr(this.c));
+    if (this.user) {
+      p.fill(this.user.c);
+      p.stroke(this.user.c);
+    } else {
+      p.fill(...clr(this.c));
+      p.stroke(...clr(this.c));
+    }
     p.rotateX(P.PI / 2);
     p.rotateY(0);
     p.cylinder(this.signalSize, 20, 24, 1, false, false);
@@ -56,18 +64,23 @@ export default class Node {
   }
 
   /* updates the shapes position, and other attributes
-      (randomly or predetermined) */
-  update() {
-    this.updateSignal();
-    this.c = increment(this.c, P.random(-5, 5), 128);
-    this.pos.add(Vec.random2D().mult(2));
+   * (randomly or predetermined)
+   */
+  update(p5, params) {
+    const { C } = params;
+    this.updateSignal(params);
+    this.c = increment(this.c, P.random(-3, 3), 128);
+    this.pos.add(Vec.random2D().mult(C));
   }
 
   /* increases signal size and sets to zero when it has reached its max size
-      at that point, 'influences' all the shapes the signal reached */
-  updateSignal() {
-    if (this.signalSize > maxSigSize(this.c)) {
-      this.graph.updateDist(this.name);
+   * at that point, 'influences' all the shapes the signal reached
+   */
+  updateSignal(params) {
+    const { B } = params;
+
+    if (this.signalSize > maxSigSize(this.c, B)) {
+      this.graph.updateDist(this.name, params);
       this.signalSize = 0;
     } else if (this.signalSize > 0) {
       this.signalSize += 5;
@@ -76,14 +89,17 @@ export default class Node {
     }
   }
 
-  /* distance formula */
+  /* distance formula
+   */
   dist(that) {
     return this.pos.dist(that.pos);
   }
 
-  /* 'influences' another shape by updating its attributes */
-  /* todo: tweak */
-  influence(that) {
+  /* 'influences' another shape by updating its attributes
+   */
+  influence(that, params) {
+    const { A } = params;
+
     const isMoreExtreme = Math.sign(Math.abs(this.c) - Math.abs(that.c));
     const samePolarity = (that.c > 0) ^ (this.c < 0); // eslint-disable-line
     // 1 if are similar polarity, -1 if opposite
@@ -92,7 +108,7 @@ export default class Node {
     that.pos.add(Vec.sub(this.pos, that.pos)
       .rotate(P.HALF_PI / 2)
       .normalize()
-      .mult(dir * 5));
+      .mult(dir * A));
 
     that.c = increment(that.c, isMoreExtreme * Math.sign(this.c), 128);
   }

@@ -1,4 +1,4 @@
-import Node from './node';
+import Node from './Node';
 import { maxSigSize } from './utils';
 
 /* Graph class
@@ -10,15 +10,17 @@ export default class Graph {
     this.nodes = Array(n)
       .fill()
       .map((_, i) => new Node(i, w, h, this));
+    this.hasUser = false;
   }
 
   /* when a nodes signal has been sent, this function updates the
       shapes it has reached */
-  updateDist(i) {
+  updateDist(i, params) {
+    const { B } = params;
     const n1 = this.nodes[i];
     const nodesReached = this.nodes.reduce((acc, n2, j) => {
-      if ((i !== j) && (n1.dist(n2) <= maxSigSize(n1.c))) {
-        n1.influence(n2);
+      if ((i !== j) && (n1.dist(n2) <= maxSigSize(n1.c, B))) {
+        n1.influence(n2, params);
         return acc + 1;
       }
       return acc;
@@ -27,11 +29,22 @@ export default class Graph {
   }
 
   /* continually draws and updates nodes */
-  run(p) {
+  run(p5, params) {
     this.nodes.forEach((n) => {
-      n.update();
-      n.draw(p);
+      n.update(p5, params);
+      n.draw(p5);
     });
-    // console.log(JSON.parse(localStorage.getItem("consoleHistory")));
+  }
+
+  addUser(w, h, shape) {
+    if (this.user) {
+      if (this.user.c !== shape.c || this.user.sides !== shape.sides) {
+        this.nodes[this.nodes.length - 1] = new Node(this.nodes.length - 1, w, h, this, shape);
+        this.user = shape;
+      }
+    } else {
+      this.nodes.push(new Node(this.nodes.length, w, h, this, shape));
+      this.user = shape;
+    }
   }
 }
