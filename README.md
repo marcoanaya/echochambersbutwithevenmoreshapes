@@ -7,3 +7,6 @@ The objects (which vary in size, color, and shape) wandering through the void re
 The simple algorithm, which chooses where the shapes move and who they can reach, exploits differences in one facet (color) to futher its own ends. The algorithm, in turn, changes this characteristic of the shapes as they are programatically moved around.
 
 It depends on the user whether this ultimately leads to extremism. The creator of the console log statements would certainly prefer that, since it increases engagement, and will reward the user if they do so. The informalism of the console log statements is meant to be evocative of the informalism I personally have experienced in tech (perhaps exaggerated a bit).
+
+## tech stack
+p5.js, React, Firebase
