@@ -1,6 +1,6 @@
 ## internet art final
 
-My goal aims to offer a bleaker view of the modern Internet, where large social media platforms and their algorithms play a huge role determining how we use the technology and even how it affects us. 
+My goal aims to offer a bleaker view of the modern Internet, where large social media platforms and their algorithms play a huge role determining how we use the technology and even who we are. 
 
 The objects (which vary in size, color, and shape) wandering through the void represent us and our multifaceted nature. (The few amount of ways in which the objects  differ was a limitation of my abilities.) The objects are meant to move and with some randomness, evoke the feeling that they are in a way living.
 
